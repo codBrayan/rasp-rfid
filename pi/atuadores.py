@@ -11,6 +11,9 @@ led = RGBLED(
     active_high=not config.LED_ANODO_COMUM,
 )
 
+print(config.PINO_LED_VERMELHO)
+
+
 buzzer = Buzzer(config.PINO_BUZZER) if config.BUZZER_ATIVO else None
 
 VERDE = (0, 1, 0)
@@ -21,7 +24,7 @@ VERMELHO = (1, 0, 0)
 
 def bipar(ligado, desligado, vezes):
     if buzzer:
-        buzzer.beep(on_time=ligado, off_time=desligado, n=vezes)
+        buzzer.beep(on_time=ligado, off_time=desligado, n=vezes, background=False)
 
 
 def acender(cor, segundos):
@@ -36,13 +39,15 @@ def sinalizar(resultado):
         acender(VERDE, 2)
     elif resultado == "SAIDA":
         bipar(0.1, 0.1, 2)
-        acender(AZUL, 2)
+        acender(AMARELO, 2)
     elif resultado == "NEGADO":
         bipar(0.8, 0.1, 1)
         acender(AMARELO, 2)
     elif resultado == "INVASAO":
-        bipar(0.25, 0.25, 8)
-        led.blink(on_time=0.25, off_time=0.25, on_color=VERMELHO, n=8, background=False)
+        for i in range(3):
+            bipar(0.1, 0.1, 1)
+            acender(VERMELHO, 0.5)
+            sleep(0.1)
 
 
 if __name__ == "__main__":
